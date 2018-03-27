@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 /**
  * 
  */
@@ -10,47 +12,39 @@ public class Unit {
 
 	private String code;
 	private String name;
-	private Student[] students = new Student[0];
+	public HashMap<String, Student> enrolledStudents = new HashMap<String, Student>();
 	
 	public Unit(String unitCode, String unitName) {
-		
 		code = unitCode;
 		name = unitName;
-		
 	}
 	
 	public String description() {
-		
 		return code + " " + name;
-		
 	}
 	
-	public String[] studentDescription() {
-		
-		String[] student = new String[students.length];
-		for (int i = 0; i < students.length; i++) {
-			
-			student[i] = students[i].description();
-		
-		}
-		
+	public String studentDescription(String key) {
+		String student = ((Student) enrolledStudents.get(key)).description();
 		return student;
-		
 	}
 	
 	public void enrolStudent(Student newStudent) {
-		
-		Student[] output = new Student[students.length + 1];
-		for (int i = 0; i < students.length; i++) {
-			
-			output[i] = students[i];
-			
-		}
-		
-		output[students.length] = newStudent;
-		students = output;
-		
+		String id = newStudent.getId();
+		enrolledStudents.put(id, newStudent);
 	}
 	
-
+	public void getStudents() {
+		for (String key : enrolledStudents.keySet()) {
+			Student student = enrolledStudents.get(key);
+			System.out.println(student.description());
+			}
+	}
+	
+	public boolean isEnrolled(String key) {
+		return enrolledStudents.containsKey(key);
+	}
+	
+	public void unenrolStudent(String key) {
+		enrolledStudents.remove(key);
+	}
 }
